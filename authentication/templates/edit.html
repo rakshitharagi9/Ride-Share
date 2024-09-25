@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: -webkit-gradient(linear, left top, right top, color-stop(55%, #1a2e35), color-stop(55%, #1cbbb4));
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #BA68C8;
+        }
+
+        .profile-button {
+            background: #ff4f5a;
+            box-shadow: none;
+            border: none;
+        }
+
+        .profile-button:hover {
+            background: #ff4f5a;
+        }
+
+        .profile-button:focus {
+            background: #ff4f5a;
+            box-shadow: none;
+        }
+
+        .profile-button:active {
+            background: #ff4f5a;
+            box-shadow: none;
+        }
+
+        .back:hover {
+            color: #682773;
+            cursor: pointer;
+        }
+
+        .labels {
+            font-size: 11px;
+            color: #1a2e35;
+        }
+
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <form method="post" class="edit-form" action="{% url 'edited' %}" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                            {% if user.profile_pic %}
+                                <img class="rounded-circle mt-5" width="150px" id="profilePicPreview" src="{{ user.profile_pic.url }}" alt="Profile Picture">
+                            {% else %}
+                                <img class="rounded-circle mt-5" width="150px" id="profilePicPreview" src="path/to/default/image.jpg" alt="Profile Picture">
+                            {% endif %}
+
+                            <span class="font-weight-bold">{{ first_name }} {{last_name }}</span>
+                            <span class="text-black-50">{{ user.email }}</span>
+                            <span> </span>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Profile Settings</h4>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label class="labels">First Name</label>
+                                    <input type="text" class="form-control" name="first_name" placeholder="First Name" value="{{ first_name }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="labels">Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" value="{{ last_name }}">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label class="labels">Username</label>
+                                    <input type="text" class="form-control" name="username" placeholder="Username" value="{{ user.username }}" readonly>
+                                </div>
+                                <!-- <div class="col-md-12">
+                                    <label class="labels">Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Password" value="">
+                                </div> -->
+                                <div class="col-md-12">
+                                    <label class="labels">Email</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ user.email }}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Phone Number</label>
+                                    <input type="tel" class="form-control" name="phonenumber" placeholder="Phone Number" value="{{ user.phone_number }}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Age</label>
+                                    <input type="number" class="form-control" name="age" placeholder="Age" value="{{ user.age }}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Gender</label>
+                                    <select class="form-control" name="gender" value="{{ user.gender }}">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer_not_to_say">Prefer not to say</option>
+                                        {% if not user.gender %}
+                                        <option value="" selected>Select Gender</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <!-- <div class="col-md-12">
+                                    <label class="labels">Profile Picture</label>
+                                    <input type="file" class="form-control-file" name="profile_pic" id="profilePic" accept="image/*" onchange="previewProfilePic(event)">
+                                </div> -->
+                            </div>
+                            <div class="mt-5 text-center">
+                                <button class="btn btn-primary profile-button" type="submit">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        function previewProfilePic(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('profilePicPreview');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>

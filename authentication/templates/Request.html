@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Rides</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: -webkit-gradient(linear, left top, right top, color-stop(55%, #1a2e35), color-stop(55%, #1cbbb4));
+            color: black;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+        font: bolder;
+            padding: 10px;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 450px;
+            margin: auto;
+        }
+
+        li {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #1cbbb4;
+        }
+
+        .request-form {
+            text-align: center;
+        }
+
+        .request-button {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #ff4f5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-button:hover {
+            background-color: #ff4f5a;
+        }
+
+        .group {
+            margin-bottom: 20px;
+            padding: 10px;
+            display: flex;
+        }
+
+        .group div {
+            margin-bottom: 5px;
+        }
+
+        .label {
+            background-color: white;
+            color: black;
+            padding: 5px;
+            border-radius: 5px;
+            margin-right: 10px;
+            display: inline-block;
+            font-weight: bolder;
+            width: 80px;
+        }
+
+        .value {
+            background-color: white;
+            color: black;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            flex-grow: 1;
+        }
+
+        .column {
+            display: inline-block;
+            width: 65%; /* Adjusted column width */
+            vertical-align: top;
+            margin-right: 10px; /* Adjusted margin */
+        }
+        /* Cancel button styles */
+        .cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red; /* Gray */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <button class="cancel-button" onclick="cancelAction()" style="background-color: red"><b>X</b></button>
+  <script>
+      function cancelAction() {
+          window.location.href = '/mainpage/';
+      }
+  </script>
+    <h1>Available Rides</h1>
+    <br>
+    <div style="width: 80%; margin: auto;">
+        <ul>
+            {% for item in a %}
+                <li>
+                    <div class="group publisher-info">
+                        <div class="column">
+                            <div class="label">UserName</div>
+                            <div class="value">{{ item.0 }}</div><br>
+                            <div class="label">Gender</div>
+                            <div class="value">{{ item.1 }}</div><br>
+                            <div class="label">Age</div>
+                            <div class="value">{{ item.2 }}</div><br>
+                            <div class="label">Rating</div>
+                            <div class="value">{{ item.3 }}</div><br>
+                        </div>
+                        {% if item.4 != "@" %}
+                            <div class="column">
+                                <div class="label">Request 1 Username</div>
+                                <div class="value">{{ item.4 }}</div><br>
+                                <div class="label">Request 1 Gender</div>
+                                <div class="value">{{ item.5 }}</div><br>
+                                <div class="label">Request 1 Age</div>
+                                <div class="value">{{ item.6 }}</div><br>
+                                <div class="label">Request 1 Rating</div>
+                                <div class="value">{{ item.7 }}</div><br>
+                            </div>
+                        {% endif %}
+                        {% if item.8 != "@" %}
+                            <div class="column">
+                                <div class="label">Request 2 Username</div>
+                                <div class="value">{{ item.8 }}</div><br>
+                                <div class="label">Request 2 Gender</div>
+                                <div class="value">{{ item.9 }}</div><br>
+                                <div class="label">Request 2 Age</div>
+                                <div class="value">{{ item.10 }}</div><br>
+                                <div class="label">Request 2 Rating</div>
+                                <div class="value">{{ item.11 }}</div><br>
+                            </div>
+                        {% endif %}
+                        {% if item.12 != "@" %}
+                            <div class="column">
+                                <div class="label">Request 3 Username</div>
+                                <div class="value">{{ item.12 }}</div><br>
+                                <div class="label">Request 3 Gender</div>
+                                <div class="value">{{ item.13 }}</div><br>
+                                <div class="label">Request 3 Age</div>
+                                <div class="value">{{ item.14 }}</div><br>
+                                <div class="label">Request 3 Rating</div>
+                                <div class="value">{{ item.15 }}</div><br>
+                            </div>
+                        {% endif %}
+                        <div class="column">
+                            <div class="label">Source</div>
+                            <div class="value">{{ item.16 }}</div><br>
+                            <div class="label">Destination</div>
+                            <div class="value">{{ item.17 }}</div><br>
+                            <div class="label">Date</div>
+                            <div class="value">{{ item.18 }}</div><br>
+                            <div class="label">Time</div>
+                            <div class="value">{{ item.19 }}</div><br>
+                            <div class="label">Seats</div>
+                            <div class="value">{{ item.20 }}</div><br>
+                            <div class="label">Wheeler</div>
+                            <div class="value">{{ item.21 }}</div><br>
+                            <div class="label">Vehicle</div>
+                            <div class="value">{{ item.22 }}</div><br>
+                        </div>
+                    </div>
+                    <form class="group request-form" action="{% url 'sendingrequest' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="publishername" value="{{ item.0 }}">
+                        <button type="submit" class="request-button">Send Request</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

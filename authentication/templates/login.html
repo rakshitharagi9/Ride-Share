@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: -webkit-gradient(linear, left top, right top, color-stop(55%, #1a2e35), color-stop(55%, #1cbbb4));
+            color: white; /* Text color */
+        }
+
+        .btn-primary {
+            background-color: #ff4f5a; /* Red Button Color */
+            border-color: #ff4f5a; /* Red Button Border Color */
+        }
+
+        a {
+            color: white; /* Link color */
+        }
+
+        .form-container {
+            max-width: 400px; /* Max width for the form */
+            margin: 0 auto; /* Center the form horizontally */
+        }
+
+        h1 {
+            margin-bottom: 0; /* Remove margin below RIDESHARE heading */
+            font-weight: bold; /* Increase boldness */
+        }
+
+        h3 {
+            font-weight: bold; /* Increase boldness */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Login form -->
+        <div class="form-container">
+            <form class="card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+                <h1 style="text-align: center;margin-bottom:10px;"><span style="color: rgb(0, 0, 0);"> LOGIN TO<BR>RIDESHARE</span></h1>
+
+                {% csrf_token %} <!-- CSRF token for security -->
+
+                <!-- Login heading -->
+               
+
+                <!-- Display error/success messages -->
+                {% if messages %}
+                <div class="alert alert-primary" role="alert">
+                    {% for message in messages %}
+                    {{ message }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Username input field -->
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        placeholder="Enter username" required>
+                </div>
+
+                <!-- Password input field -->
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                </div>
+
+                <!-- Link to registration page -->
+                <p style="text-align: center; color: #000;">Don't have an account <a style="color: #000;" href="/register/">Register</a> </p>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

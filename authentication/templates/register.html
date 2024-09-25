@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Registration Form</title>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: -webkit-gradient(linear, left top, right top, color-stop(55%, #1a2e35), color-stop(55%, #1cbbb4));
+            color: white; /* Text color */
+        }
+
+        .btn-primary {
+            background-color: #ff4f5a; /* Red Button Color */
+            border-color: #ff4f5a; /* Red Button Border Color */
+        }
+
+        a {
+            color: black; /* Link color */
+        }
+
+        .form-container {
+            max-width: 400px; /* Max width for the form */
+            margin: 0 auto; /* Center the form horizontally */
+        }
+
+        h1:first-child {
+            margin-bottom: 0; /* Remove margin below RIDESHARE heading */
+        }
+
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-pic-input {
+            display: none;
+        }
+
+        .profile-pic-label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 150px;
+            background-color: #f0f0f0;
+            border: 2px dashed #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            font-size: 14px;
+            color: #000000;
+            text-align: center;
+        }
+
+        .profile-pic-label span {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Registration form -->
+        <div class="form-container">
+            <form class="card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+                {% csrf_token %} <!-- CSRF token for security -->
+
+                <!-- Registration form heading -->
+                <h1 style="font-family: 'Poppins';text-align: center;margin-bottom:10px; font-weight: 740;"><span style="color: rgb(0, 0, 0);">REGISTER RIDESHARE</span></h1>
+
+                <!-- Display error/success messages -->
+                {% if messages %}
+                <div class="alert alert-primary" role="alert">
+                    {% for message in messages %}
+                    {{ message }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Profile Picture input field -->
+                <div class="form-group profile-pic-container">
+                    <input type="file" class="profile-pic-input" name="profile_pic" id="profilePic" onchange="updateProfilePic(this)">
+                    <label for="profilePic" id="profilePicLabel" class="profile-pic-label">
+                        <span>Upload your profile here</span>
+                    </label>
+                </div>
+
+                <!-- First Name input field -->
+                <div class="form-group">
+                    <label for="firstName">First name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter First name" name="first_name" required>
+                </div>
+
+                <!-- Last Name input field -->
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text" name="last_name" class="form-control" id="lastName" placeholder="Enter Last name" required>
+                </div>
+
+                <!-- Gmail input field -->
+                <div class="form-group">
+                    <label for="email">Gmail</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter Gmail" required>
+                </div>
+
+                <!-- Username input field -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username" required>
+                </div>
+
+                <!-- Password input field -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                </div>
+
+                <!-- Date of Birth input field -->
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" class="form-control" name="dateofbirth" id="dateOfBirth" required>
+                </div>
+
+                <!-- Gender selection field -->
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="form-control" name="gender" id="gender" required>
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Phone Number input field -->
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="text" class="form-control" name="phonenumber" id="phoneNumber" placeholder="Enter Phone Number" required>
+                </div>
+
+                <!-- Link to login page for users who already have an account -->
+                <p style="text-align: center; color: #000000;">Already have an account <a href="/login/">Login</a></p>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript to update profile picture display -->
+    <script>
+        function updateProfilePic(input) {
+            const label = document.getElementById('profilePicLabel');
+            const span = label.querySelector('span');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    label.style.backgroundImage = 'url(' + e.target.result + ')';
+                    span.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                label.style.backgroundImage = '';
+                span.style.display = 'block';
+                span.textContent = 'Upload your profile here';
+            }
+        }
+    </script>
+</body>
+</html>

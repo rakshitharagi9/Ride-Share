@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Page</title>
+    <style>
+        body {
+            background: -webkit-gradient(linear, left top, right top, color-stop(55%, #1a2e35), color-stop(55%, #1cbbb4));
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light gray background */
+        }
+
+        .container {
+            max-width: 600px; /* Limit container width */
+            margin: 20px auto; /* Center the container horizontally */
+            padding: 20px;
+            background-color: #ffffff; /* White background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Position container relative for absolute positioning */
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000; /* Header text color */
+        }
+
+        .chat-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .chat-item:last-child {
+            border-bottom: none; /* Remove border from last chat item */
+            margin-bottom: 0;
+        }
+
+        .chat-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-details {
+            flex-grow: 1;
+        }
+
+        .user-details .field-label {
+            font-weight: bold;
+            color: #555; /* Label text color */
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons form {
+            margin: 0;
+        }
+
+        .buttons button {
+            padding: 5px 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .accept-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .reject-button {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        .empty-message {
+            font-size: 24px;
+            color: #555;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Cancel button styles */
+        .cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red; /* Gray */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <button class="cancel-button" onclick="cancelAction()" style="background-color: red"><b>X</b></button>
+        <script>
+            function cancelAction() {
+                window.location.href = '/mainpage/';
+            }
+        </script>
+    <div class="container">
+        <!-- Cancel button -->
+        
+        <h1 class="chat-header">Accept Requests</h1>
+        <ul class="chat-list">
+            {% if users %}
+                {% for item in users %}
+                    <li class="chat-item">
+                        <div class="chat-info">
+                            <div class="user-details">
+                                <div><span class="field-label">Username:</span> {{ item.0 }}</div>
+                                <div><span class="field-label">Rating:</span> {{ item.1 }}</div>
+                                <div><span class="field-label">Gender:</span> {{ item.2 }}</div>
+                                <div><span class="field-label">Age:</span> {{ item.3 }}</div>
+                                <div><span class="field-label">Time:</span> {{ item.5 }}</div>
+                                <div><span class="field-label">Date:</span> {{ item.4|date:"Y-m-d" }}</div>
+
+
+                            </div>
+                            <div class="buttons">
+                                <form action="{% url 'acceptrequest' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="username" value="{{ item.0 }}">
+                                    <input type="hidden" name="date" value="{{ item.4|date:'Y-m-d' }}">
+                                    <input type="hidden" name="time" value="{{ item.5 }}">
+                                    <input type="hidden" name="action" value="accept">
+                                    <button type="submit" class="accept-button">Accept</button>
+                                </form>
+                                <form action="{% url 'rejectrequest' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="username" value="{{ item.0 }}">
+                                    <input type="hidden" name="date" value="{{ item.4 }}">
+                                    <input type="hidden" name="time" value="{{ item.5 }}">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button type="submit" class="reject-button">Reject</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No users are currently available.</p>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>

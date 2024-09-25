@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Your Ride</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #1a2e35 50%, #1cbbb4 50%);
+            color: white; 
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); 
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333; 
+            margin-top: 30px;
+        }
+        h1 {
+            color: #000;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 2rem;
+            color: gray;
+            cursor: pointer;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+        .rating-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .btn-submit {
+            background-color: #1cbbb4; 
+            color: white;
+            border: none;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #0b6e6e; 
+        }
+        /* Cancel button styles */
+        .cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red; /* Gray */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+        
+    </style>
+</head>
+<body>
+    <button class="cancel-button" onclick="cancelAction()" style="background-color: red"><b>X</b></button>
+        <script>
+            function cancelAction() {
+                window.location.href = '/your_rides/';
+            }
+        </script>
+    <div class="container">
+        <h1>Rate Your Co-Travelers</h1>
+        <form action="{% url 'submit_rating' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="ride_details" value="{{ ride_details }}">
+            {% for traveler in travelers %}
+            <div class="rating-group">
+                <label>{{ traveler.username }}</label>
+                <div class="star-rating">
+                    <input type="radio" name="rating_{{ traveler.username }}" id="5_{{ traveler.username }}" value="5">
+                    <label for="5_{{ traveler.username }}">★</label>
+                    <input type="radio" name="rating_{{ traveler.username }}" id="4_{{ traveler.username }}" value="4">
+                    <label for="4_{{ traveler.username }}">★</label>
+                    <input type="radio" name="rating_{{ traveler.username }}" id="3_{{ traveler.username }}" value="3">
+                    <label for="3_{{ traveler.username }}">★</label>
+                    <input type="radio" name="rating_{{ traveler.username }}" id="2_{{ traveler.username }}" value="2">
+                    <label for="2_{{ traveler.username }}">★</label>
+                    <input type="radio" name="rating_{{ traveler.username }}" id="1_{{ traveler.username }}" value="1">
+                    <label for="1_{{ traveler.username }}">★</label>
+                </div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-submit">Submit Ratings</button>
+        </form>
+    </div>
+</body>
+</html>

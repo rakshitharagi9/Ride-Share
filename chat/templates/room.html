@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background: linear-gradient(to right, #1a2e35 55%, #1cbbb4 55%);
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  
+
+}
+
+h2 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2.5em;
+  font-weight: 900;
+  color: #fff;
+  margin: 20px 0;
+}
+
+#display {
+  width: 100%;
+  max-width: 800px;
+  height: calc(100vh - 200px); /* Adjusted height to leave space for form */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  display: flex; /* Align items in a row */
+  flex-direction: column; /* Arrange items in a column */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+}
+
+.container {
+  
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%; /* Adjusted width */
+}
+
+.container.darker {
+  float: left; /* Align messages to the left */
+  clear: both; /* Ensure each message starts on a new line */
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #ff4f5a;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+input[type=submit]:hover {
+  background-color: #ff2f3a;
+}
+@media screen and (max-width: 600px) {
+  body {
+    padding: 0 10px;
+  }
+  h2 {
+    font-size: 2em;
+  }
+  .form-container {
+
+    padding: 15px;
+  }
+  input[type=submit] {
+    padding: 12px 18px;
+  }
+}
+/* Ensure the body takes the full viewport height */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Set the header and form container to a fixed height */
+header {
+  height: 50px;
+  background: #1a2e35;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+    background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* Set the display container to fill the remaining space */
+#display {
+  flex-grow: 1;
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align messages to the top */
+}
+/* Adjust styles for smaller screens */
+@media screen and (max-width: 600px) {
+  header, .form-container {
+    height: 40px;
+  }
+}
+/* Cancel button styles */
+.cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red; /* Gray */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <button class="cancel-button" onclick="cancelAction()" style="background-color: red"><b>X</b></button>
+  <script>
+      function cancelAction() {
+          window.location.href = '/chat_home/';
+      }
+  </script>
+<h2>welcome to ChatRoom - {{room}} </h2>
+
+<div id="display"></div>
+
+<div class="form-container">
+  <form id="post-form">
+    {% csrf_token %}
+    <input type="hidden" name="username" id="username" value="{{username}}" style="color: #1a2e35;"/>
+    <input type="hidden" name="room_id" id="room_id" value="{{room_details.id}}"/>
+    <input type="text" name="message" id="message" placeholder="Type your message here..." required />
+    <input type="submit" value="Send">
+  </form>
+</div>
+
+<script>
+$(document).ready(function(){
+  setInterval(function(){
+    $.ajax({
+      type: 'GET',
+      url : "/getMessages/{{room}}/",
+      success: function(response){
+        console.log(response);
+        $("#display").empty();
+        for (var key in response.messages)
+        {
+          var temp="<div class='container darker'><b>"+response.messages[key].user+"</b><p>"+response.messages[key].value+"</p><span class='time-left'>"+response.messages[key].date+"</span></div>";
+          $("#display").append(temp);
+        }
+        $("#display").scrollTop($("#display")[0].scrollHeight); // Scroll to bottom
+      },
+      error: function(response){
+        alert('An error occurred')
+      }
+    });
+  },1000);
+})
+
+$(document).on('submit','#post-form',function(e){
+  e.preventDefault();
+
+  $.ajax({
+    type:'POST',
+    url:'/send',
+    data:{
+      username:$('#username').val(),
+      room_id:$('#room_id').val(),
+      message:$('#message').val(),
+      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+    },
+    success: function(data){
+      //alert(data)
+    }
+  });
+  document.getElementById('message').value = ''
+});
+</script>
+
+</body>
+</html>

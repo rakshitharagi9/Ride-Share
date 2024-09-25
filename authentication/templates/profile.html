@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1a2e35 50%, #1cbbb4 50%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile-container {
+            max-width: 400px;
+            width: 80%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid #fff; /* Aqua border */
+        }
+
+        .profile-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .profile-field input,
+        .profile-field select {
+            width: calc(100% - 20px); /* Adjusted width for padding */
+            max-width: 200px;
+            padding: 10px;
+            height: 6px;
+            border: 1px solid #fff; /* Light grey border */
+            border-radius: 5px;
+            background-color: #fff; /* White background */
+            box-sizing: border-box; /* Include padding and border in width */
+            text-align: center; 
+        }
+
+        .profile-field-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 450px;
+            margin: 5px 0; /* Reduce margin */
+            box-sizing: border-box; /* Include padding and border in width */
+        }
+
+        .profile-field-row .profile-field {
+            flex: 1;
+            margin: 0 5px; /* Reduce margin */
+        }
+
+        h1 {
+            color: #000; /* black for the header */
+            font-weight: 900;
+            font-style: Precious;
+        }
+
+        .edit-button {
+            background-color: #ff4f5a; /* Aqua color for button */
+            color: #fff;
+            font-weight: 900;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .edit-button:hover {
+            background-color: #ff4f5a; /* Dark background on hover */
+        }
+        /* Cancel button styles */
+        .cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red; /* Gray */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+        label {
+            /* font-family: 'Lucida Handwriting', cursive, Arial, sans-serif; */
+            font-weight: bolder;
+            margin-bottom: 5px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <button class="cancel-button" onclick="cancelAction()" style="background-color: red"><b>X</b></button>
+        <script>
+            function cancelAction() {
+                window.location.href = '/mainpage/';
+            }
+        </script>
+        <h1>User Profile</h1>
+        <div class="profile-info">
+            <img src="/{{ user_info.8 }}" alt="Profile Picture">
+            <div class="profile-field-row">
+                <div class="profile-field">
+                    <label>First_name</label>
+                    <input  type="text" id="first_name" value="{{ user_info.1 }}" readonly placeholder="First Name">
+                </div>
+                <div class="profile-field">
+                    <label>Last_name</label>
+                    <input   type="text" id="last_name" value="{{ user_info.2 }}" readonly placeholder="Last Name">
+                </div>
+            </div>
+            <div class="profile-field">
+                <label>User_name</label>
+                <input type="text" id="username" value="{{ user_info.0 }}" readonly placeholder="Username">
+            </div>
+            <div class="profile-field">
+                <label>Email</label>
+                <input type="email" id="email" value="{{ user_info.3 }}" readonly placeholder="Email">
+            </div>
+            <div class="profile-field">
+                <label>Phone_number</label>
+                <input type="tel" id="phonenumber" value="{{ user_info.4 }}" readonly placeholder="Phone Number">
+            </div>
+            <div class="profile-field-row">
+                <div class="profile-field">
+                    <label>Age</label>
+                    <input type="number" id="age" value="{{ user_info.5 }}" readonly placeholder="Age">
+                </div>
+                <div class="profile-field">
+                    <label>Gender</label>
+                    <input type="text" id="gender" value="{{ user_info.6 }}" readonly placeholder="Gender">
+                </div>
+            </div>
+            <div class="profile-field">
+                <label>Rating</label>
+                <input type="text" id="rating" value="{{ user_info.7 }}" readonly placeholder="Rating">
+            </div>
+            <form action="{% url 'edit' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="submit" value="Edit Profile" class="edit-button">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
